@@ -16,4 +16,4 @@ jobs:
       image: ghcr.io/drupdater/drupdater-php8.3:latest
     steps:
       - name: Run Drupdater
-        run: /opt/drupdater/bin ${{ github.server_url }}/${{ github.repository }} ${{ secrets.GITHUB_TOKEN }}
+        run: /opt/drupdater/bin ${{ github.server_url }}/${{ github.repository }} ${{ secrets.GITHUB_TOKEN }} --branch master
