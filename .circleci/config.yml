@@ -31,7 +31,7 @@ commands:
 jobs:
   build_backend:
     docker:
-      - image: cimg/php:8.1
+      - image: cimg/php:8.2
     working_directory: ~/repo
     steps:
       - setup-build
@@ -54,7 +54,7 @@ jobs:
       - run: yarn run extension-build
   phpcs:
     docker:
-      - image: cimg/php:8.1
+      - image: cimg/php:8.2
     steps:
       - setup-build
       - install-composer
@@ -63,7 +63,7 @@ jobs:
           command: ./bin/phpcs web/modules/custom
   phpstan:
     docker:
-      - image: cimg/php:8.1
+      - image: cimg/php:8.2
     steps:
       - setup-build
       - install-composer
@@ -71,9 +71,23 @@ jobs:
       - run:
           name: phpstan
           command: ./bin/phpstan analyse web/modules/custom --debug
+  phpunit:
+    docker:
+      - image: cimg/php:8.2
+    steps:
+      - setup-build
+      - install-composer
+      - run:
+          name: Create files directory
+          command: mkdir -p web/sites/default/files && chmod 777 web/sites/default/files
+      - run:
+          name: phpunit
+          command: bin/phpunit web/modules/custom --no-coverage
+          environment:
+            SIMPLETEST_DB: sqlite://localhost//tmp/drupal-test.sqlite
   rector:
     docker:
-      - image: cimg/php:8.1
+      - image: cimg/php:8.2
     steps:
       - setup-build
       - install-composer
@@ -83,7 +97,7 @@ jobs:
           command:  php bin/rector process web/modules/custom
   upgrade_status:
     docker:
-      - image: cimg/php:8.1
+      - image: cimg/php:8.2
     steps:
       - setup-build
       - install-composer
@@ -96,7 +110,7 @@ jobs:
           command: ./bin/drush upgrade_status:analyze --all --ignore-uninstalled
   e2e_test:
     docker:
-      - image: cimg/php:8.1-browsers
+      - image: cimg/php:8.2-browsers
         environment:
           REACT_APP_API_BASE_URL: 'http://127.0.0.1:8080'
     working_directory: ~/repo
@@ -128,14 +142,16 @@ jobs:
           command: ./bin/drush cim -y
       - run:
           name: Check for config changes on new branch
-          command: ./bin/drush config:status 2>&1 | grep "No differences"
+          command: |
+            ./bin/drush config:status 2>&1
+            ./bin/drush config:status 2>&1 | grep "No differences"
       - run:
           name: Start builtin
           command: php -S 127.0.0.1:8080 -t web
           background: true
       - run:
           name: Wait for web server
-          command: dockerize -wait http://127.0.0.1:8080 -timeout 120s
+          command: dockerize -wait http://127.0.0.1:8080/jsonapi -timeout 120s
       - run:
           name: Fetch entrypoint
           command: curl http://127.0.0.1:8080/jsonapi
@@ -155,5 +171,6 @@ workflows:
   test:
     jobs:
       - phpstan
+      - phpunit
       - upgrade_status
       - e2e_test
