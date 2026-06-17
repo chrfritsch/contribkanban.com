@@ -16,4 +16,4 @@ jobs:
       image: ghcr.io/drupdater/drupdater-php8.3:latest
     steps:
       - name: Run Drupdater (security only)
-        run: /opt/drupdater/bin ${{ github.server_url }}/${{ github.repository }} ${{ secrets.GITHUB_TOKEN }} --branch master --security --skip-cbf
+        run: /opt/drupdater/bin ${{ github.server_url }}/${{ github.repository }} ${{ secrets.GITHUB_TOKEN }} --branch master --security --skip-cbf --verbose
