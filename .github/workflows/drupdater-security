@@ -1,0 +1,19 @@
+name: Drupdater Security
+
+on:
+  schedule:
+    - cron: "0 4 * * *"  # every day at 04:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  drupdater-security:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/drupdater/drupdater-php8.2:latest
+    steps:
+      - name: Run Drupdater (security only)
+        run: /opt/drupdater/bin ${{ github.server_url }}/${{ github.repository }} ${{ secrets.GITHUB_TOKEN }} --security
