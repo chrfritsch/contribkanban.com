@@ -21,8 +21,8 @@
         "composer/installers": "^1.2 | ^2.0",
         "cweagans/composer-patches": "^1.6.5",
         "drupal/admin_toolbar": "^3.0",
-        "drupal/core-composer-scaffold": "^10.6",
-        "drupal/core-recommended": "^10.6",
+        "drupal/core-composer-scaffold": "^10.6.11",
+        "drupal/core-recommended": "^10.6.11",
         "drupal/email_registration": "^1.0@RC",
         "drupal/entity": "~1.0",
         "drupal/gin": "^4.1@RC",
@@ -55,13 +55,13 @@
         "apcu-autoloader": true,
         "sort-packages": true,
         "allow-plugins": {
-            "composer/installers": true,
             "cweagans/composer-patches": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "drupal/core-composer-scaffold": true,
             "php-http/discovery": true,
             "phpstan/extension-installer": true,
-            "tbachert/spi": true
+            "tbachert/spi": true,
+            "composer/installers": true
         }
     },
     "extra": {
