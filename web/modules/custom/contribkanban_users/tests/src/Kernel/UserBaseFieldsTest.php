@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\contribkanban_users\Kernel;
 
+use Drupal\contribkanban_users\GravatarFieldItemList;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\user\Entity\User;
 use GuzzleHttp\Client;
@@ -64,7 +65,7 @@ class UserBaseFieldsTest extends EntityKernelTestBase {
     $user->save();
 
     $field_list = $user->get('mail_hash');
-    $this->assertInstanceOf(\Drupal\contribkanban_users\GravatarFieldItemList::class, $field_list);
+    $this->assertInstanceOf(GravatarFieldItemList::class, $field_list);
     $first = $field_list->first();
     $this->assertNotNull($first);
     $this->assertEquals(md5('test@example.com'), $first->getValue()['value']);
