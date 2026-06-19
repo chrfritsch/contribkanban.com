@@ -17,5 +17,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0  # full history is required to push the update branch
       - name: Run Drupdater
         run: /opt/drupdater/bin ${{ secrets.GITHUB_TOKEN }}
