@@ -13,7 +13,9 @@ jobs:
   drupdater:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/drupdater/drupdater-php8.2:latest
+      image: ghcr.io/drupdater/drupdater-php8.2:refactor-existing-checkout
     steps:
+      - name: Checkout
+        uses: actions/checkout@v7
       - name: Run Drupdater
-        run: /opt/drupdater/bin ${{ github.server_url }}/${{ github.repository }} ${{ secrets.GITHUB_TOKEN }} --branch master
+        run: /opt/drupdater/bin ${{ secrets.GITHUB_TOKEN }}
